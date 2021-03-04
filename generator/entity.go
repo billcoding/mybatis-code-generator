@@ -21,22 +21,17 @@ type EntityGenerator struct {
 }
 
 func (eg *EntityGenerator) Generate() {
-	eg.generateEntity()
 	eg.generateClass()
 	eg.generateFile()
 }
 
-func (eg *EntityGenerator) generateEntity() {
+func (eg *EntityGenerator) Init() *EntityGenerator {
 	eg.Entity = &Entity{
 		PKG:     eg.C.Entity.PKG,
 		Table:   eg.Table,
 		Fields:  make([]*Field, 0),
 		Comment: eg.C.Entity.Comment,
 	}
-	eg.setEntityParams()
-}
-
-func (eg *EntityGenerator) setEntityParams() {
 	eg.Entity.Name = ConvertString(eg.Table.Name, eg.C.Entity.TableToEntityStrategy)
 	eg.Entity.PKGName = eg.Entity.PKG + "." + eg.Entity.Name
 	importMap := make(map[string]struct{}, 0)
@@ -82,6 +77,7 @@ func (eg *EntityGenerator) setEntityParams() {
 			eg.Imports = append(eg.Imports, "lombok.NoArgsConstructor")
 		}
 	}
+	return eg
 }
 
 func (eg *EntityGenerator) generateClass() {

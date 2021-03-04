@@ -19,7 +19,6 @@ type GlobalConfiguration struct {
 }
 
 type EntityConfiguration struct {
-	Entity                   bool
 	PKG                      string
 	TableToEntityStrategy    StrategyType
 	ColumnToFieldStrategy    StrategyType
@@ -43,7 +42,6 @@ type EntityConfiguration struct {
 }
 
 type MapperConfiguration struct {
-	Mapper                bool
 	PKG                   string
 	TableToMapperStrategy StrategyType
 	MapperNamePrefix      string
@@ -52,10 +50,12 @@ type MapperConfiguration struct {
 	Extends               []string
 	MybatisPlus           bool
 	Comment               bool
+	MapperAnnotation      bool
 }
 
 type XMLConfiguration struct {
-	XML                bool
 	Dir                string
 	TableToXMLStrategy StrategyType
+	MapperPrefixes     []string
+	MapperSuffixes     []string
 }

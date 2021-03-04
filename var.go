@@ -17,8 +17,7 @@ var CFG = &Configuration{
 		CopyrightContent: "Mybatis code generator written by Golang",
 	},
 	Entity: &EntityConfiguration{
-		Entity:                   false,
-		PKG:                      "entity",
+		PKG:                      "entityxx",
 		TableToEntityStrategy:    UnderlineToUpper,
 		ColumnToFieldStrategy:    UnderlineToCamel,
 		Comment:                  true,
@@ -40,8 +39,7 @@ var CFG = &Configuration{
 		ColumnAnnotation:         true,
 	},
 	Mapper: &MapperConfiguration{
-		Mapper:                false,
-		PKG:                   "mapper",
+		PKG:                   "mapperxx",
 		TableToMapperStrategy: UnderlineToUpper,
 		MapperNamePrefix:      "",
 		MapperNameSuffix:      "Mapper",
@@ -49,11 +47,13 @@ var CFG = &Configuration{
 		Extends:               make([]string, 0),
 		MybatisPlus:           false,
 		Comment:               true,
+		MapperAnnotation:      true,
 	},
 	XML: &XMLConfiguration{
-		XML:                false,
-		Dir:                "xml",
+		Dir:                "xmlxx",
 		TableToXMLStrategy: UnderlineToUpper,
+		MapperPrefixes:     make([]string, 0),
+		MapperSuffixes:     make([]string, 0),
 	},
 }
 
