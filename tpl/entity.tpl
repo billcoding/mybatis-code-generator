@@ -3,7 +3,7 @@ package {{.Config.Entity.PKG}};
  {{if .Config.Entity.Comment}}* {{.Entity.Comment}}{{end}}
  * @author {{.Config.Global.Author}}
  {{if .Config.Global.Date}}* @since {{.Extra.DATE}}{{end}}
- {{if .Config.Entity.Copyright}}@create by {{.Config.Entity.CopyrightContent}}{{end}}
+ {{if .Config.Global.Copyright}}@create by {{.Config.Global.CopyrightContent}}{{end}}
 */
 {{if .Config.Entity.EntityAnnotation}}@Entity{{end}}
 {{if .Config.Entity.TableAnnotation}}@Table(name = "{{.Table.Name}}"){{end}}

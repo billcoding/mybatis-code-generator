@@ -1,16 +1,20 @@
 package config
 
 type Configuration struct {
-	Global GlobalConfiguration
-	Entity EntityConfiguration
-	Mapper MapperConfiguration
-	XML    XMLConfiguration
+	IncludeTables []string
+	ExcludeTables []string
+	Global        *GlobalConfiguration
+	Entity        *EntityConfiguration
+	Mapper        *MapperConfiguration
+	XML           *XMLConfiguration
 }
 
 type GlobalConfiguration struct {
-	Author     string
-	Date       bool
-	DateLayout string
+	Author           string
+	Date             bool
+	DateLayout       string
+	Copyright        bool
+	CopyrightContent string
 }
 
 type EntityConfiguration struct {
@@ -18,8 +22,6 @@ type EntityConfiguration struct {
 	PKG                      string
 	TableToEntityStrategy    StrategyType
 	ColumnToFieldStrategy    StrategyType
-	Copyright                bool
-	CopyrightContent         string
 	Comment                  bool
 	FieldComment             bool
 	Lombok                   bool
