@@ -10,13 +10,13 @@ func ConvertString(str string, st StrategyType) string {
 	switch st {
 	default:
 		return str
-	case None:
+	case "None":
 		return str
-	case OnlyFirstLetterUpper:
+	case "OnlyFirstLetterUpper":
 		return onlyFirstLetterUpper(str)
-	case UnderlineToCamel:
+	case "UnderlineToCamel":
 		return underlineToCamel(str)
-	case UnderlineToUpper:
+	case "UnderlineToUpper":
 		return underlineToUpper(str)
 	}
 }

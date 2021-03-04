@@ -22,10 +22,11 @@ var tableXML = `<?xml version="1.0" encoding="UTF-8"?>
     <select id="SelectTableList">
 		SELECT 
 		  t.TABLE_NAME,
-		  t.TABLE_COMMENT 
+		  IFNULL(t.TABLE_COMMENT, '') as TABLE_COMMENT
 		FROM
 		  information_schema.TABLES AS t 
-		WHERE t.TABLE_SCHEMA = '{{.}}' 
+		WHERE t.TABLE_SCHEMA = '{{.DBName}}'
+		{{.Where}}
     </select>
     <select id="SelectTableColumnList">
 		SELECT 
@@ -45,7 +46,7 @@ var tableXML = `<?xml version="1.0" encoding="UTF-8"?>
 				LOCATE('(', t.COLUMN_TYPE) - 1
 			  )
 			) AS COLUMN_TYPE,
-			t.COLUMN_COMMENT 
+			IFNULL(t.COLUMN_COMMENT, '') as COLUMN_COMMENT
 		  FROM
 			information_schema.COLUMNS AS t 
 		  WHERE t.TABLE_SCHEMA = '{{.}}' 

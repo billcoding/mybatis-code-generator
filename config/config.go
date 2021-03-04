@@ -1,6 +1,7 @@
 package config
 
 type Configuration struct {
+	OutputDir     string
 	IncludeTables []string
 	ExcludeTables []string
 	Global        *GlobalConfiguration

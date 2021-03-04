@@ -2,10 +2,12 @@ package main
 
 import (
 	. "github.com/billcoding/mybatis-code-generator/config"
+	"os"
 )
 
 var CFG = &Configuration{
-	IncludeTables: make([]string, 0),
+	OutputDir:     "",
+	IncludeTables: []string{"purchase_in_log"},
 	ExcludeTables: make([]string, 0),
 	Global: &GlobalConfiguration{
 		Author:           "bill",
@@ -26,7 +28,7 @@ var CFG = &Configuration{
 		LombokNoArgsConstructor:  true,
 		LombokAllArgsConstructor: true,
 		LombokBuilder:            true,
-		Implement:                true,
+		Implement:                false,
 		Implements:               make([]string, 0),
 		Extend:                   false,
 		Extends:                  "",
@@ -53,4 +55,14 @@ var CFG = &Configuration{
 		Dir:                "xml",
 		TableToXMLStrategy: UnderlineToUpper,
 	},
+}
+
+func init() {
+	if CFG.OutputDir == "" {
+		exec, err := os.Getwd()
+		if err != nil {
+			panic(err)
+		}
+		CFG.OutputDir = exec
+	}
 }

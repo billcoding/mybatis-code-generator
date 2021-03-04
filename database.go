@@ -1,12 +1,24 @@
 package main
 
 import (
+	"fmt"
+	. "github.com/billcoding/mybatis-code-generator/config"
 	. "github.com/billcoding/mybatis-code-generator/mapper"
 	. "github.com/billcoding/mybatis-code-generator/model"
+	"strings"
 )
 
-func tables(database string) []*Table {
-	tableList := SelectTableListSelectMapper.Prepare(database).Exec().List(new(Table))
+func tables(database string, c *Configuration) []*Table {
+	whereSql := ""
+	if c.IncludeTables != nil && len(c.IncludeTables) > 0 {
+		whereSql = fmt.Sprintf("AND t.`TABLE_NAME` IN('%s')", strings.Join(c.IncludeTables, "','"))
+	} else if c.ExcludeTables != nil && len(c.ExcludeTables) > 0 {
+		whereSql = fmt.Sprintf("AND t.`TABLE_NAME` NOT IN('%s')", strings.Join(c.ExcludeTables, "','"))
+	}
+	tableList := SelectTableListSelectMapper.Prepare(map[string]interface{}{
+		"DBName": database,
+		"Where":  whereSql,
+	}).Exec().List(new(Table))
 	ts := make([]*Table, len(tableList))
 	for i, t := range tableList {
 		tt := t.(*Table)
@@ -16,7 +28,7 @@ func tables(database string) []*Table {
 	return ts
 }
 
-func columns(database string) []*Column {
+func columns(database string, c *Configuration) []*Column {
 	columnList := SelectTableColumnListSelectMapper.Prepare(database).Exec().List(new(Column))
 	cs := make([]*Column, len(columnList))
 	for i, c := range columnList {

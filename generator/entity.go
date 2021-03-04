@@ -10,15 +10,17 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 var logger = log.New(os.Stdout, "[EntityGenerator]", log.LstdFlags)
 
 type EntityGenerator struct {
-	C      *Configuration
-	Table  *Table
-	Entity *Entity
-	Class  string
+	C       *Configuration
+	Table   *Table
+	Entity  *Entity
+	Class   string
+	Imports []string
 }
 
 func (eg *EntityGenerator) Generate() {
@@ -29,21 +31,25 @@ func (eg *EntityGenerator) Generate() {
 
 func (eg *EntityGenerator) generateEntity() {
 	eg.Entity = &Entity{
-		PKG:    eg.C.Entity.PKG,
-		Table:  eg.Table,
-		Fields: make([]*Field, 0),
+		PKG:     eg.C.Entity.PKG,
+		Table:   eg.Table,
+		Fields:  make([]*Field, 0),
+		Comment: eg.C.Entity.Comment,
 	}
 	eg.setEntityParams()
 }
 
 func (eg *EntityGenerator) setEntityParams() {
 	eg.Entity.Name = ConvertString(eg.Table.Name, eg.C.Entity.TableToEntityStrategy)
-	eg.Entity.PKGName = eg.Entity.PKG + eg.Entity.Name
+	eg.Entity.PKGName = eg.Entity.PKG + "." + eg.Entity.Name
+	importMap := make(map[string]struct{}, 0)
 	for _, column := range eg.Table.Columns {
 		field := &Field{
-			Name:   ConvertString(column.Name, eg.C.Entity.ColumnToFieldStrategy),
-			Type:   MysqlToJavaTypes[column.Type],
-			Column: column,
+			Name:             ConvertString(column.Name, eg.C.Entity.ColumnToFieldStrategy),
+			Type:             MysqlToJavaTypes[column.Type],
+			Column:           column,
+			Comment:          eg.C.Entity.FieldComment,
+			ColumnAnnotation: eg.C.Entity.ColumnAnnotation,
 		}
 		if column.ColumnKey == "PRI" {
 			eg.Entity.HaveId = true
@@ -51,24 +57,56 @@ func (eg *EntityGenerator) setEntityParams() {
 		} else {
 			eg.Entity.Fields = append(eg.Entity.Fields, field)
 		}
+		if importPKG, have := JavaTypePKGs[field.Type]; have {
+			importMap[importPKG] = struct{}{}
+		}
+	}
+	eg.Imports = make([]string, 0)
+	for k := range importMap {
+		eg.Imports = append(eg.Imports, k)
+	}
+	if eg.C.Entity.ColumnAnnotation {
+		eg.Imports = append(eg.Imports, "javax.persistence.Column")
+	}
+	if eg.C.Entity.IdAnnotation {
+		eg.Imports = append(eg.Imports, "javax.persistence.Id")
+	}
+	if eg.C.Entity.Lombok {
+		if eg.C.Entity.LombokAllArgsConstructor {
+			eg.Imports = append(eg.Imports, "lombok.AllArgsConstructor")
+		}
+		if eg.C.Entity.LombokBuilder {
+			eg.Imports = append(eg.Imports, "lombok.Builder")
+		}
+		if eg.C.Entity.LombokData {
+			eg.Imports = append(eg.Imports, "lombok.Data")
+		}
+		if eg.C.Entity.LombokNoArgsConstructor {
+			eg.Imports = append(eg.Imports, "lombok.NoArgsConstructor")
+		}
 	}
 }
 
-func (eg *EntityGenerator) generateClass() string {
+func (eg *EntityGenerator) generateClass() {
 	class := ExecuteTpl(tpl.EntityTpl(), map[string]interface{}{
 		"Entity": eg.Entity,
 		"Config": eg.C,
+		"Extra": map[string]interface{}{
+			"Date": time.Now().Format(eg.C.Global.DateLayout),
+		},
+		"Imports": eg.Imports,
 	})
 	var buffer strings.Builder
 	io.WriteString(&buffer, class)
-	return class
+	eg.Class = buffer.String()
 }
 
 func (eg *EntityGenerator) generateFile() {
-	entityFileName := filepath.Join(strings.Split(eg.Entity.PKGName, ".")...)
-	f, err := os.OpenFile(entityFileName, os.O_CREATE, 0700)
-	if err != nil {
-		panic(err)
-	}
-	io.WriteString(f, eg.Class)
+	paths := make([]string, 0)
+	paths = append(paths, eg.C.OutputDir)
+	paths = append(paths, strings.Split(eg.Entity.PKGName, ".")...)
+	entityFileName := filepath.Join(paths...) + ".java"
+	dir := filepath.Dir(entityFileName)
+	_ = os.MkdirAll(dir, 0700)
+	os.WriteFile(entityFileName, []byte(eg.Class), 0700)
 }
