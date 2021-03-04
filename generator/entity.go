@@ -6,14 +6,11 @@ import (
 	"github.com/billcoding/mybatis-code-generator/tpl"
 	. "github.com/billcoding/mybatis-code-generator/util"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 )
-
-var logger = log.New(os.Stdout, "[EntityGenerator]", log.LstdFlags)
 
 type EntityGenerator struct {
 	C       *Configuration
@@ -97,7 +94,7 @@ func (eg *EntityGenerator) generateClass() {
 		"Imports": eg.Imports,
 	})
 	var buffer strings.Builder
-	io.WriteString(&buffer, class)
+	_, _ = io.WriteString(&buffer, class)
 	eg.Class = buffer.String()
 }
 
@@ -108,5 +105,5 @@ func (eg *EntityGenerator) generateFile() {
 	entityFileName := filepath.Join(paths...) + ".java"
 	dir := filepath.Dir(entityFileName)
 	_ = os.MkdirAll(dir, 0700)
-	os.WriteFile(entityFileName, []byte(eg.Class), 0700)
+	_ = os.WriteFile(entityFileName, []byte(eg.Class), 0700)
 }
