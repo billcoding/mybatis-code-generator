@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	. "github.com/billcoding/mybatis-code-generator/config"
-	. "github.com/billcoding/mybatis-code-generator/mapper"
 	. "github.com/billcoding/mybatis-code-generator/model"
 	"strings"
 )

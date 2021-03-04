@@ -1,21 +1,4 @@
-package mapper
-
-import (
-	. "github.com/billcoding/gobatis"
-	. "github.com/billcoding/mybatis-code-generator/config"
-)
-
-var (
-	SelectTableListSelectMapper       *SelectMapper
-	SelectTableColumnListSelectMapper *SelectMapper
-)
-
-func init() {
-	Default().AddRaw(tableXML)
-
-	SelectTableListSelectMapper = NewHelperWithBatis(Ba, "table", "SelectTableList").Select()
-	SelectTableColumnListSelectMapper = NewHelperWithBatis(Ba, "table", "SelectTableColumnList").Select()
-}
+package main
 
 var tableXML = `<?xml version="1.0" encoding="UTF-8"?>
 <batis-mapper binding="table">

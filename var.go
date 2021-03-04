@@ -7,7 +7,7 @@ import (
 
 var CFG = &Configuration{
 	OutputDir:     "",
-	IncludeTables: []string{"purchase_in_log"},
+	IncludeTables: make([]string, 0),
 	ExcludeTables: make([]string, 0),
 	Global: &GlobalConfiguration{
 		Author:           "bill",
