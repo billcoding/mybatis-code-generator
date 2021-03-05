@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  {{if .Config.Repository.Comment}}* {{.Repository.Entity.Table.Comment}} Repository 接口{{end}}
  * @author {{.Config.Global.Author}}
  {{if .Config.Global.Date}}* @since {{.Extra.Date}}{{end}}
- {{if .Config.Global.Copyright}}* @create by {{.Config.Global.CopyrightContent}}{{end}}
+ {{if .Config.Global.Copyright}}* @created by {{.Config.Global.CopyrightContent}}{{end}}
  {{if .Config.Global.Website}}* @repo {{.Config.Global.WebsiteContent}}{{end}}
  */
 {{if .Config.Repository.RepositoryAnnotation}}@Repository{{end}}

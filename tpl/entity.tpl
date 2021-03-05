@@ -6,7 +6,7 @@ package {{.Config.Entity.PKG}};
  {{if .Config.Entity.Comment}}* {{.Entity.Table.Comment}}{{end}}
  * @author {{.Config.Global.Author}}
  {{if .Config.Global.Date}}* @since {{.Extra.Date}}{{end}}
- {{if .Config.Global.Copyright}}* @create by {{.Config.Global.CopyrightContent}}{{end}}
+ {{if .Config.Global.Copyright}}* @created by {{.Config.Global.CopyrightContent}}{{end}}
  {{if .Config.Global.Website}}* @repo {{.Config.Global.WebsiteContent}}{{end}}
 */
 {{if .Config.Entity.EntityAnnotation}}@Entity{{end}}

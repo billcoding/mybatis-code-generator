@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
- {{if .Config.XML.Comment}} {{.XML.Mapper.Entity.Table.Comment}} Mapper XML{{end}}
+ {{if .Config.XML.Comment}}{{.XML.Mapper.Entity.Table.Comment}} Mapper XML{{end}}
  @author {{.Config.Global.Author}}
  {{if .Config.Global.Date}}@since {{.Extra.Date}}{{end}}
- {{if .Config.Global.Copyright}}@create by {{.Config.Global.CopyrightContent}}{{end}}
+ {{if .Config.Global.Copyright}}@created by {{.Config.Global.CopyrightContent}}{{end}}
  {{if .Config.Global.Website}}@repo {{.Config.Global.WebsiteContent}}{{end}}
 -->
 <mapper namespace="{{.XML.Mapper.PKGName}}">
