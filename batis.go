@@ -5,4 +5,16 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var Ba *Batis
+var (
+	SelectTableListSelectMapper       *SelectMapper
+	SelectTableColumnListSelectMapper *SelectMapper
+)
+
+func initBatis() {
+	Default().DSN(*dsn)
+
+	Default().AddRaw(tableXML)
+
+	SelectTableListSelectMapper = NewHelper("table", "SelectTableList").Select()
+	SelectTableColumnListSelectMapper = NewHelper("table", "SelectTableColumnList").Select()
+}

@@ -2,11 +2,13 @@ package config
 
 type Configuration struct {
 	OutputDir     string
+	Verbose       bool
 	IncludeTables []string
 	ExcludeTables []string
 	Global        *GlobalConfiguration
 	Entity        *EntityConfiguration
 	Mapper        *MapperConfiguration
+	Repository    *RepositoryConfiguration
 	XML           *XMLConfiguration
 }
 
@@ -16,6 +18,8 @@ type GlobalConfiguration struct {
 	DateLayout       string
 	Copyright        bool
 	CopyrightContent string
+	Website          bool
+	WebsiteContent   string
 }
 
 type EntityConfiguration struct {
@@ -42,20 +46,25 @@ type EntityConfiguration struct {
 }
 
 type MapperConfiguration struct {
-	PKG                   string
-	TableToMapperStrategy StrategyType
-	MapperNamePrefix      string
-	MapperNameSuffix      string
-	Extend                bool
-	Extends               []string
-	MybatisPlus           bool
-	Comment               bool
-	MapperAnnotation      bool
+	PKG              string
+	MapperNamePrefix string
+	MapperNameSuffix string
+	Comment          bool
+	MapperAnnotation bool
+	MybatisPlus      bool
+}
+
+type RepositoryConfiguration struct {
+	PKG                  string
+	RepositoryNamePrefix string
+	RepositoryNameSuffix string
+	Comment              bool
+	RepositoryAnnotation bool
 }
 
 type XMLConfiguration struct {
-	Dir                string
-	TableToXMLStrategy StrategyType
-	MapperPrefixes     []string
-	MapperSuffixes     []string
+	Dir            string
+	Comment        bool
+	MapperPrefixes []string
+	MapperSuffixes []string
 }

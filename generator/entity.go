@@ -1,16 +1,20 @@
 package generator
 
 import (
+	"fmt"
 	. "github.com/billcoding/mybatis-code-generator/config"
 	. "github.com/billcoding/mybatis-code-generator/model"
 	"github.com/billcoding/mybatis-code-generator/tpl"
 	. "github.com/billcoding/mybatis-code-generator/util"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 )
+
+var entityGeneratorLogger = log.New(os.Stdout, "[EntityGenerator]", log.LstdFlags)
 
 type EntityGenerator struct {
 	C       *Configuration
@@ -92,6 +96,9 @@ func (eg *EntityGenerator) generateClass() {
 	var buffer strings.Builder
 	_, _ = io.WriteString(&buffer, class)
 	eg.Class = buffer.String()
+	if eg.C.Verbose {
+		entityGeneratorLogger.Println(fmt.Sprintf("[generateClass] for entity[%s]", eg.Entity.Name))
+	}
 }
 
 func (eg *EntityGenerator) generateFile() {
@@ -102,4 +109,7 @@ func (eg *EntityGenerator) generateFile() {
 	dir := filepath.Dir(entityFileName)
 	_ = os.MkdirAll(dir, 0700)
 	_ = os.WriteFile(entityFileName, []byte(eg.Class), 0700)
+	if eg.C.Verbose {
+		entityGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s]", eg.Entity.Name))
+	}
 }

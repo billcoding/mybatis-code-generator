@@ -1,20 +1,25 @@
 package generator
 
 import (
+	"fmt"
 	. "github.com/billcoding/mybatis-code-generator/config"
 	. "github.com/billcoding/mybatis-code-generator/model"
 	. "github.com/billcoding/mybatis-code-generator/tpl"
 	. "github.com/billcoding/mybatis-code-generator/util"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
+var xmlGeneratorLogger = log.New(os.Stdout, "[XMLGenerator]", log.LstdFlags)
+
 type XMLGenerator struct {
-	C          *Configuration
-	XML        *XML
-	XMLContent string
+	C       *Configuration
+	XML     *XML
+	Content string
 }
 
 func (xg *XMLGenerator) Init(m *Mapper) {
@@ -32,18 +37,24 @@ func (xg *XMLGenerator) Init(m *Mapper) {
 }
 
 func (xg *XMLGenerator) Generate() {
-	xg.generateXMLContent()
+	xg.generateContent()
 	xg.generateFile()
 }
 
-func (xg *XMLGenerator) generateXMLContent() {
+func (xg *XMLGenerator) generateContent() {
 	xml := ExecuteTpl(XMLTpl(), map[string]interface{}{
 		"XML":    xg.XML,
 		"Config": xg.C,
+		"Extra": map[string]interface{}{
+			"Date": time.Now().Format(xg.C.Global.DateLayout),
+		},
 	})
 	var buffer strings.Builder
 	_, _ = io.WriteString(&buffer, xml)
-	xg.XMLContent = buffer.String()
+	xg.Content = buffer.String()
+	if xg.C.Verbose {
+		xmlGeneratorLogger.Println(fmt.Sprintf("[generateContent] for entity[%s]", xg.XML.Mapper.Entity.Name))
+	}
 }
 
 func (xg *XMLGenerator) generateFile() {
@@ -54,5 +65,8 @@ func (xg *XMLGenerator) generateFile() {
 	xmlFileName := filepath.Join(paths...) + ".xml"
 	dir := filepath.Dir(xmlFileName)
 	_ = os.MkdirAll(dir, 0700)
-	_ = os.WriteFile(xmlFileName, []byte(xg.XMLContent), 0700)
+	_ = os.WriteFile(xmlFileName, []byte(xg.Content), 0700)
+	if xg.C.Verbose {
+		xmlGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s]", xg.XML.Mapper.Entity.Name))
+	}
 }

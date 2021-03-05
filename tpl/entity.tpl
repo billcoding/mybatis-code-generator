@@ -7,6 +7,7 @@ package {{.Config.Entity.PKG}};
  * @author {{.Config.Global.Author}}
  {{if .Config.Global.Date}}* @since {{.Extra.Date}}{{end}}
  {{if .Config.Global.Copyright}}* @create by {{.Config.Global.CopyrightContent}}{{end}}
+ {{if .Config.Global.Website}}* @see {{.Config.Global.WebsiteContent}}{{end}}
 */
 {{if .Config.Entity.EntityAnnotation}}@Entity{{end}}
 {{if .Config.Entity.TableAnnotation}}@Table(name = "{{.Entity.Table.Name}}"){{end}}

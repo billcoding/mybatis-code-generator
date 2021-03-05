@@ -2,13 +2,15 @@ package tpl
 
 import "embed"
 
-//go:embed entity.tpl mapper.tpl xml.tpl
+//go:embed entity.tpl mapper.tpl repository.tpl xml.tpl
 var FS embed.FS
 var entityTpl = `entity.tpl`
 var mapperTpl = `mapper.tpl`
+var repositoryTpl = `repository.tpl`
 var xmlTpl = `xml.tpl`
 var entityTplContent = ""
 var mapperTplContent = ""
+var repositoryTplContent = ""
 var xmlTplContent = ""
 
 func EntityTpl() string {
@@ -31,6 +33,17 @@ func MapperTpl() string {
 		mapperTplContent = string(file)
 	}
 	return mapperTplContent
+}
+
+func RepositoryTpl() string {
+	if repositoryTplContent == "" {
+		file, err := FS.ReadFile(repositoryTpl)
+		if err != nil {
+			panic(err)
+		}
+		repositoryTplContent = string(file)
+	}
+	return repositoryTplContent
 }
 
 func XMLTpl() string {
