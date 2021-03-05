@@ -12,12 +12,12 @@ var (
 	version       = flag.Bool("v", false, "The version info")
 	help          = flag.Bool("h", false, "The help info")
 	outputDir     = flag.String("o", "", "The output dir")
-	dsn           = flag.String("dsn", "", "The MySQL DSN")
+	dsn           = flag.String("dsn", "root:123@tcp(127.0.0.1:3306)/test", "The MySQL DSN")
 	database      = flag.String("db", "", "The Database name")
 	includeTables = flag.String("git", "", "The include table names[table_a,table_b]")
 	excludeTables = flag.String("get", "", "The exclude table names[table_a,table_b]")
 	author        = flag.String("au", "bill", "The file copyright author")
-	print         = flag.Bool("p", false, "The verbose detail show?")
+	verbose       = flag.Bool("vb", false, "The verbose detail show?")
 
 	entity                         = flag.Bool("e", true, "The entity enable?")
 	entityPKG                      = flag.String("ep", "entity", "The entity PKG")
@@ -122,6 +122,9 @@ var CFG = &Configuration{
 }
 
 func init() {
+	if *outputDir != "" {
+		CFG.OutputDir = *outputDir
+	}
 	if CFG.OutputDir == "" {
 		exec, err := os.Getwd()
 		if err != nil {

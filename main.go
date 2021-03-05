@@ -17,7 +17,7 @@ func main() {
 		return
 	}
 
-	CFG.Verbose = *print
+	CFG.Verbose = *verbose
 
 	if *dsn == "" {
 		if CFG.Verbose {
