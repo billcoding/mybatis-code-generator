@@ -5,7 +5,7 @@
  @author {{.Config.Global.Author}}
  {{if .Config.Global.Date}}@since {{.Extra.Date}}{{end}}
  {{if .Config.Global.Copyright}}@create by {{.Config.Global.CopyrightContent}}{{end}}
- {{if .Config.Global.Website}}@see {{.Config.Global.WebsiteContent}}{{end}}
+ {{if .Config.Global.Website}}@repo {{.Config.Global.WebsiteContent}}{{end}}
 -->
 <mapper namespace="{{.XML.Mapper.PKGName}}">
     {{range $i, $e := .Config.XML.MapperPrefixes}}{{$e}}

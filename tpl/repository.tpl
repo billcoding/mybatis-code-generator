@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author {{.Config.Global.Author}}
  {{if .Config.Global.Date}}* @since {{.Extra.Date}}{{end}}
  {{if .Config.Global.Copyright}}* @create by {{.Config.Global.CopyrightContent}}{{end}}
- {{if .Config.Global.Website}}* @see {{.Config.Global.WebsiteContent}}{{end}}
+ {{if .Config.Global.Website}}* @repo {{.Config.Global.WebsiteContent}}{{end}}
  */
 {{if .Config.Repository.RepositoryAnnotation}}@Repository{{end}}
 public interface {{.Repository.Name}} extends JpaRepository<{{.Repository.Entity.Name}}, {{.Repository.Entity.Id.Type}}>{

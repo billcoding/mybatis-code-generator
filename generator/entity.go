@@ -61,6 +61,12 @@ func (eg *EntityGenerator) Init() *EntityGenerator {
 	for k := range importMap {
 		eg.Imports = append(eg.Imports, k)
 	}
+	if eg.C.Entity.EntityAnnotation {
+		eg.Imports = append(eg.Imports, "javax.persistence.Entity")
+	}
+	if eg.C.Entity.TableAnnotation {
+		eg.Imports = append(eg.Imports, "javax.persistence.Table")
+	}
 	if eg.C.Entity.ColumnAnnotation {
 		eg.Imports = append(eg.Imports, "javax.persistence.Column")
 	}

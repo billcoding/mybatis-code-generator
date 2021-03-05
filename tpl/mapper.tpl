@@ -9,7 +9,7 @@ import {{.Mapper.Entity.PKGName}};
  * @author {{.Config.Global.Author}}
  {{if .Config.Global.Date}}* @since {{.Extra.Date}}{{end}}
  {{if .Config.Global.Copyright}}* @create by {{.Config.Global.CopyrightContent}}{{end}}
- {{if .Config.Global.Website}}* @see {{.Config.Global.WebsiteContent}}{{end}}
+ {{if .Config.Global.Website}}* @repo {{.Config.Global.WebsiteContent}}{{end}}
  */
 {{if .Config.Mapper.MapperAnnotation}}@Mapper{{end}}
 public interface {{.Mapper.Name}}{{if .Config.Mapper.MybatisPlus}} extends BaseMapper<{{.Mapper.Entity.Name}}>{{end}}{
