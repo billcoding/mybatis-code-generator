@@ -34,7 +34,7 @@ func main() {
 	setCFG()
 
 	tableList := tables(*database, CFG)
-	columnList := columns(*database, CFG)
+	columnList := columns(*database)
 	tableMap := transformTables(tableList)
 	columnMap := transformColumns(columnList)
 	setTableColumns(tableMap, columnMap)

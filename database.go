@@ -27,7 +27,7 @@ func tables(database string, c *Configuration) []*Table {
 	return ts
 }
 
-func columns(database string, c *Configuration) []*Column {
+func columns(database string) []*Column {
 	columnList := SelectTableColumnListSelectMapper.Prepare(database).Exec().List(new(Column))
 	cs := make([]*Column, len(columnList))
 	for i, c := range columnList {
