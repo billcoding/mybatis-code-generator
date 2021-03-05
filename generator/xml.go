@@ -67,6 +67,6 @@ func (xg *XMLGenerator) generateFile() {
 	_ = os.MkdirAll(dir, 0700)
 	_ = os.WriteFile(xmlFileName, []byte(xg.Content), 0700)
 	if xg.C.Verbose {
-		xmlGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s]", xg.XML.Mapper.Entity.Name))
+		xmlGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s], saved as [%s]", xg.XML.Mapper.Entity.Name, xmlFileName))
 	}
 }

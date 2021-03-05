@@ -121,7 +121,7 @@ var CFG = &Configuration{
 	},
 }
 
-func init() {
+func setCFG() {
 	if *outputDir != "" {
 		CFG.OutputDir = *outputDir
 	}
@@ -132,9 +132,6 @@ func init() {
 		}
 		CFG.OutputDir = exec
 	}
-}
-
-func setCFG() {
 	if *includeTables != "" {
 		CFG.IncludeTables = strings.Split(*includeTables, ",")
 	} else if *excludeTables != "" {

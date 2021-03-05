@@ -56,11 +56,11 @@ func (rg *RepositoryGenerator) generateFile() {
 	paths := make([]string, 0)
 	paths = append(paths, rg.C.OutputDir)
 	paths = append(paths, strings.Split(rg.Repository.PKGName, ".")...)
-	mapperFileName := filepath.Join(paths...) + ".java"
-	dir := filepath.Dir(mapperFileName)
+	repositoryFileName := filepath.Join(paths...) + ".java"
+	dir := filepath.Dir(repositoryFileName)
 	_ = os.MkdirAll(dir, 0700)
-	_ = os.WriteFile(mapperFileName, []byte(rg.RepositoryContent), 0700)
+	_ = os.WriteFile(repositoryFileName, []byte(rg.RepositoryContent), 0700)
 	if rg.C.Verbose {
-		repositoryGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s]", rg.Repository.Entity.Name))
+		repositoryGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s], saved as [%s]", rg.Repository.Entity.Name, repositoryFileName))
 	}
 }

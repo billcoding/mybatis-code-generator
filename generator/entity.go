@@ -110,6 +110,6 @@ func (eg *EntityGenerator) generateFile() {
 	_ = os.MkdirAll(dir, 0700)
 	_ = os.WriteFile(entityFileName, []byte(eg.Class), 0700)
 	if eg.C.Verbose {
-		entityGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s]", eg.Entity.Name))
+		entityGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s], saved as [%s]", eg.Entity.Name, entityFileName))
 	}
 }

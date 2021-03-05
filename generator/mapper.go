@@ -61,6 +61,6 @@ func (mg *MapperGenerator) generateFile() {
 	_ = os.MkdirAll(dir, 0700)
 	_ = os.WriteFile(mapperFileName, []byte(mg.Interface), 0700)
 	if mg.C.Verbose {
-		mapperGeneratorlogger.Println(fmt.Sprintf("[generateFile] for entity[%s]", mg.Mapper.Entity.Name))
+		mapperGeneratorlogger.Println(fmt.Sprintf("[generateFile] for entity[%s], saved as [%s]", mg.Mapper.Entity.Name, mapperFileName))
 	}
 }
