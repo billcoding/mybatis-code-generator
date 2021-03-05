@@ -20,18 +20,12 @@ func main() {
 	CFG.Verbose = *verbose
 
 	if *dsn == "" {
-		if CFG.Verbose {
-			logger.Println("The DSN is required")
-		}
-		printUsage()
+		logger.Println("The DSN is required")
 		return
 	}
 
 	if *database == "" {
-		if CFG.Verbose {
-			logger.Println("The Database name is required")
-		}
-		printUsage()
+		logger.Println("The Database name is required")
 		return
 	}
 
