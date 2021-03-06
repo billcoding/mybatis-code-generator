@@ -54,17 +54,16 @@ var (
 	repositoryComment              = flag.Bool("rc", true, "The Repository comment?")
 	repositoryRepositoryAnnotation = flag.Bool("rra", true, "The Repository @Repository generated?")
 
-	xml              = flag.Bool("x", true, "The mapper xml enable?")
-	xmlDir           = flag.String("xd", "xml", "The XML Dir generated")
-	xmlComment       = flag.Bool("xc", true, "The XML comment?")
-	xmlContentPrefix = flag.String("xcp", "", "The XML body prefix")
-	xmlContentSuffix = flag.String("xcs", "", "The XML body suffix")
+	xml        = flag.Bool("x", true, "The mapper xml enable?")
+	xmlDir     = flag.String("xd", "xml", "The XML Dir generated")
+	xmlComment = flag.Bool("xc", true, "The XML comment?")
 )
 
 var logger = log.New(os.Stdout, "[mybatis-code-generator]", log.LstdFlags)
 
 var CFG = &Configuration{
 	OutputDir:     "",
+	Verbose:       false,
 	IncludeTables: make([]string, 0),
 	ExcludeTables: make([]string, 0),
 	Global: &GlobalConfiguration{
@@ -100,24 +99,22 @@ var CFG = &Configuration{
 	},
 	Mapper: &MapperConfiguration{
 		PKG:              "mapper",
-		MapperNamePrefix: "",
-		MapperNameSuffix: "Mapper",
+		NamePrefix:       "",
+		NameSuffix:       "Mapper",
 		MybatisPlus:      true,
 		Comment:          true,
 		MapperAnnotation: true,
 	},
 	Repository: &RepositoryConfiguration{
 		PKG:                  "repository",
-		RepositoryNamePrefix: "",
-		RepositoryNameSuffix: "Repository",
+		NamePrefix:           "",
+		NameSuffix:           "Repository",
 		Comment:              true,
 		RepositoryAnnotation: true,
 	},
 	XML: &XMLConfiguration{
-		Dir:            "xml",
-		MapperPrefixes: make([]string, 0),
-		MapperSuffixes: make([]string, 0),
-		Comment:        true,
+		Dir:     "xml",
+		Comment: true,
 	},
 }
 
@@ -142,76 +139,77 @@ func setCFG() {
 		CFG.Global.Author = *author
 	}
 
-	if *entityPKG != "" {
-		CFG.Entity.PKG = *entityPKG
-	}
-
-	entityTableToEntityStrategyMap := map[int]StrategyType{
+	strategyTypeMap := map[int]StrategyType{
 		0: None,
 		1: OnlyFirstLetterUpper,
 		2: UnderlineToCamel,
 		3: UnderlineToUpper,
 	}
-	s1, have1 := entityTableToEntityStrategyMap[*entityTableToEntityStrategy]
-	if have1 {
-		CFG.Entity.TableToEntityStrategy = s1
-	}
-	s2, have2 := entityTableToEntityStrategyMap[*entityColumnToFieldStrategy]
-	if have2 {
-		CFG.Entity.ColumnToFieldStrategy = s2
-	}
-	CFG.Entity.Comment = *entityComment
-	CFG.Entity.FieldComment = *entityFieldComment
-	CFG.Entity.Lombok = *entityLombok
-	CFG.Entity.LombokData = *entityLombokData
-	CFG.Entity.LombokNoArgsConstructor = *entityLombokNoArgsConstructor
-	CFG.Entity.LombokAllArgsConstructor = *entityLombokAllArgsConstructor
-	CFG.Entity.LombokBuilder = *entityLombokBuilder
+	{
+		if *entityPKG != "" {
+			CFG.Entity.PKG = *entityPKG
+		}
+		s1, have1 := strategyTypeMap[*entityTableToEntityStrategy]
+		if have1 {
+			CFG.Entity.TableToEntityStrategy = s1
+		}
+		s2, have2 := strategyTypeMap[*entityColumnToFieldStrategy]
+		if have2 {
+			CFG.Entity.ColumnToFieldStrategy = s2
+		}
+		CFG.Entity.Comment = *entityComment
+		CFG.Entity.FieldComment = *entityFieldComment
+		CFG.Entity.Lombok = *entityLombok
+		CFG.Entity.LombokData = *entityLombokData
+		CFG.Entity.LombokNoArgsConstructor = *entityLombokNoArgsConstructor
+		CFG.Entity.LombokAllArgsConstructor = *entityLombokAllArgsConstructor
+		CFG.Entity.LombokBuilder = *entityLombokBuilder
 
-	if *entityImplements != "" {
-		CFG.Entity.Implement = true
-		CFG.Entity.Implements = strings.Split(*entityImplements, ",")
+		if *entityImplements != "" {
+			CFG.Entity.Implement = true
+			CFG.Entity.Implements = strings.Split(*entityImplements, ",")
+		}
+		if *entityExtends != "" {
+			CFG.Entity.Extend = true
+			CFG.Entity.Extends = *entityExtends
+		}
+		if *entityClassPrefix != "" {
+			CFG.Entity.EntityClassPrefixes = strings.Split(*entityClassPrefix, ",")
+		}
+		if *entityClassSuffix != "" {
+			CFG.Entity.EntityClassSuffixes = strings.Split(*entityClassSuffix, ",")
+		}
+		CFG.Entity.EntityAnnotation = *entityAnnotation
+		CFG.Entity.TableAnnotation = *entityTableAnnotation
+		CFG.Entity.IdAnnotation = *entityIdAnnotation
+		CFG.Entity.ColumnAnnotation = *entityColumnAnnotation
 	}
-	if *entityExtends != "" {
-		CFG.Entity.Extend = true
-		CFG.Entity.Extends = *entityExtends
-	}
-	if *entityClassPrefix != "" {
-		CFG.Entity.EntityClassPrefixes = strings.Split(*entityClassPrefix, ",")
-	}
-	if *entityClassSuffix != "" {
-		CFG.Entity.EntityClassSuffixes = strings.Split(*entityClassSuffix, ",")
-	}
-	CFG.Entity.EntityAnnotation = *entityAnnotation
-	CFG.Entity.TableAnnotation = *entityTableAnnotation
-	CFG.Entity.IdAnnotation = *entityIdAnnotation
-	CFG.Entity.ColumnAnnotation = *entityColumnAnnotation
 
-	if *mapperPKG != "" {
-		CFG.Mapper.PKG = *mapperPKG
+	{
+		if *mapperPKG != "" {
+			CFG.Mapper.PKG = *mapperPKG
+		}
+		CFG.Mapper.NamePrefix = *mapperNamePrefix
+		CFG.Mapper.NameSuffix = *mapperNameSuffix
+		CFG.Mapper.MybatisPlus = *mapperMybatis
+		CFG.Mapper.Comment = *mapperComment
+		CFG.Mapper.MapperAnnotation = *mapperMapperAnnotation
 	}
-	CFG.Mapper.MapperNamePrefix = *mapperNamePrefix
-	CFG.Mapper.MapperNameSuffix = *mapperNameSuffix
-	CFG.Mapper.MybatisPlus = *mapperMybatis
-	CFG.Mapper.Comment = *mapperComment
-	CFG.Mapper.MapperAnnotation = *mapperMapperAnnotation
 
-	if *repositoryPKG != "" {
-		CFG.Repository.PKG = *repositoryPKG
+	{
+		if *repositoryPKG != "" {
+			CFG.Repository.PKG = *repositoryPKG
+		}
+		CFG.Repository.NamePrefix = *repositoryNamePrefix
+		CFG.Repository.NameSuffix = *repositoryNameSuffix
+		CFG.Repository.Comment = *repositoryComment
+		CFG.Repository.RepositoryAnnotation = *repositoryRepositoryAnnotation
 	}
-	CFG.Repository.RepositoryNamePrefix = *repositoryNamePrefix
-	CFG.Repository.RepositoryNameSuffix = *repositoryNameSuffix
-	CFG.Repository.Comment = *repositoryComment
-	CFG.Repository.RepositoryAnnotation = *repositoryRepositoryAnnotation
 
-	if *xmlDir != "" {
-		CFG.XML.Dir = *xmlDir
-	}
-	CFG.XML.Comment = *xmlComment
-	if *xmlContentPrefix != "" {
-		CFG.XML.MapperPrefixes = strings.Split(*xmlContentPrefix, ",")
-	}
-	if *xmlContentSuffix != "" {
-		CFG.XML.MapperSuffixes = strings.Split(*xmlContentSuffix, ",")
+	{
+		if *xmlDir != "" {
+			CFG.XML.Dir = *xmlDir
+		}
+		CFG.XML.Comment = *xmlComment
 	}
 }

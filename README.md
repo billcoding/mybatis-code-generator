@@ -93,10 +93,6 @@ Supports options:
   -x    The mapper xml enable? (default true)
   -xc
         The XML comment? (default true)
-  -xcp string
-        The XML body prefix
-  -xcs string
-        The XML body suffix
   -xd string
         The XML Dir generated (default "xml")
 ```

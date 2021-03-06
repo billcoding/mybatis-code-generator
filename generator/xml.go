@@ -6,20 +6,18 @@ import (
 	. "github.com/billcoding/mybatis-code-generator/model"
 	. "github.com/billcoding/mybatis-code-generator/tpl"
 	. "github.com/billcoding/mybatis-code-generator/util"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 )
 
 var xmlGeneratorLogger = log.New(os.Stdout, "[XMLGenerator]", log.LstdFlags)
 
 type XMLGenerator struct {
-	C       *Configuration
-	XML     *XML
-	Content string
+	C    *Configuration
+	XML  *XML
+	Body string
 }
 
 func (xg *XMLGenerator) Init(m *Mapper) {
@@ -42,16 +40,13 @@ func (xg *XMLGenerator) Generate() {
 }
 
 func (xg *XMLGenerator) generateContent() {
-	xml := ExecuteTpl(XMLTpl(), map[string]interface{}{
+	xg.Body = ExecuteTpl(XMLTpl(), map[string]interface{}{
 		"XML":    xg.XML,
 		"Config": xg.C,
 		"Extra": map[string]interface{}{
 			"Date": time.Now().Format(xg.C.Global.DateLayout),
 		},
 	})
-	var buffer strings.Builder
-	_, _ = io.WriteString(&buffer, xml)
-	xg.Content = buffer.String()
 	if xg.C.Verbose {
 		xmlGeneratorLogger.Println(fmt.Sprintf("[generateContent] for entity[%s]", xg.XML.Mapper.Entity.Name))
 	}
@@ -62,11 +57,11 @@ func (xg *XMLGenerator) generateFile() {
 	paths = append(paths, xg.C.OutputDir)
 	paths = append(paths, xg.C.XML.Dir)
 	paths = append(paths, xg.XML.Mapper.Name)
-	xmlFileName := filepath.Join(paths...) + ".xml"
-	dir := filepath.Dir(xmlFileName)
+	fileName := filepath.Join(paths...) + ".xml"
+	dir := filepath.Dir(fileName)
 	_ = os.MkdirAll(dir, 0700)
-	_ = os.WriteFile(xmlFileName, []byte(xg.Content), 0700)
+	_ = os.WriteFile(fileName, []byte(xg.Body), 0700)
 	if xg.C.Verbose {
-		xmlGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s], saved as [%s]", xg.XML.Mapper.Entity.Name, xmlFileName))
+		xmlGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s], saved as [%s]", xg.XML.Mapper.Entity.Name, fileName))
 	}
 }

@@ -6,7 +6,6 @@ import (
 	. "github.com/billcoding/mybatis-code-generator/model"
 	"github.com/billcoding/mybatis-code-generator/tpl"
 	. "github.com/billcoding/mybatis-code-generator/util"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,12 +19,12 @@ type EntityGenerator struct {
 	C       *Configuration
 	Table   *Table
 	Entity  *Entity
-	Class   string
+	Body    string
 	Imports []string
 }
 
 func (eg *EntityGenerator) Generate() {
-	eg.generateClass()
+	eg.generateBody()
 	eg.generateFile()
 }
 
@@ -90,8 +89,8 @@ func (eg *EntityGenerator) Init() *EntityGenerator {
 	return eg
 }
 
-func (eg *EntityGenerator) generateClass() {
-	class := ExecuteTpl(tpl.EntityTpl(), map[string]interface{}{
+func (eg *EntityGenerator) generateBody() {
+	eg.Body = ExecuteTpl(tpl.EntityTpl(), map[string]interface{}{
 		"Entity": eg.Entity,
 		"Config": eg.C,
 		"Extra": map[string]interface{}{
@@ -99,11 +98,8 @@ func (eg *EntityGenerator) generateClass() {
 		},
 		"Imports": eg.Imports,
 	})
-	var buffer strings.Builder
-	_, _ = io.WriteString(&buffer, class)
-	eg.Class = buffer.String()
 	if eg.C.Verbose {
-		entityGeneratorLogger.Println(fmt.Sprintf("[generateClass] for entity[%s]", eg.Entity.Name))
+		entityGeneratorLogger.Println(fmt.Sprintf("[generateBody] for entity[%s]", eg.Entity.Name))
 	}
 }
 
@@ -111,11 +107,11 @@ func (eg *EntityGenerator) generateFile() {
 	paths := make([]string, 0)
 	paths = append(paths, eg.C.OutputDir)
 	paths = append(paths, strings.Split(eg.Entity.PKGName, ".")...)
-	entityFileName := filepath.Join(paths...) + ".java"
-	dir := filepath.Dir(entityFileName)
+	fileName := filepath.Join(paths...) + ".java"
+	dir := filepath.Dir(fileName)
 	_ = os.MkdirAll(dir, 0700)
-	_ = os.WriteFile(entityFileName, []byte(eg.Class), 0700)
+	_ = os.WriteFile(fileName, []byte(eg.Body), 0700)
 	if eg.C.Verbose {
-		entityGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s], saved as [%s]", eg.Entity.Name, entityFileName))
+		entityGeneratorLogger.Println(fmt.Sprintf("[generateFile] for entity[%s], saved as [%s]", eg.Entity.Name, fileName))
 	}
 }

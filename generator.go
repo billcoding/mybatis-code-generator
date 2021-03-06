@@ -5,7 +5,7 @@ import (
 	. "github.com/billcoding/mybatis-code-generator/model"
 )
 
-func GetEntityGenerators(tableMap map[string]*Table) []Generator {
+func getEntityGenerators(tableMap map[string]*Table) []Generator {
 	egs := make([]Generator, 0)
 	for _, v := range tableMap {
 		eg := &EntityGenerator{
@@ -18,7 +18,7 @@ func GetEntityGenerators(tableMap map[string]*Table) []Generator {
 	return egs
 }
 
-func GetMapperGenerators(entityGenerators []Generator) []Generator {
+func getMapperGenerators(entityGenerators []Generator) []Generator {
 	egs := make([]Generator, 0)
 	for _, eg := range entityGenerators {
 		mg := &MapperGenerator{
@@ -30,7 +30,7 @@ func GetMapperGenerators(entityGenerators []Generator) []Generator {
 	return egs
 }
 
-func GetRepositoryGenerators(entityGenerators []Generator) []Generator {
+func getRepositoryGenerators(entityGenerators []Generator) []Generator {
 	rgs := make([]Generator, 0)
 	for _, eg := range entityGenerators {
 		rg := &RepositoryGenerator{
@@ -42,14 +42,14 @@ func GetRepositoryGenerators(entityGenerators []Generator) []Generator {
 	return rgs
 }
 
-func GetXMLGenerators(mapperGenerators []Generator) []Generator {
+func getXMLGenerators(mapperGenerators []Generator) []Generator {
 	xgs := make([]Generator, 0)
 	for _, mg := range mapperGenerators {
-		xml := &XMLGenerator{
+		xg := &XMLGenerator{
 			C: CFG,
 		}
-		xml.Init(mg.(*MapperGenerator).Mapper)
-		xgs = append(xgs, xml)
+		xg.Init(mg.(*MapperGenerator).Mapper)
+		xgs = append(xgs, xg)
 	}
 	return xgs
 }

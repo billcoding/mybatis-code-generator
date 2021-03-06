@@ -47,8 +47,8 @@ type EntityConfiguration struct {
 
 type MapperConfiguration struct {
 	PKG              string
-	MapperNamePrefix string
-	MapperNameSuffix string
+	NamePrefix       string
+	NameSuffix       string
 	Comment          bool
 	MapperAnnotation bool
 	MybatisPlus      bool
@@ -56,15 +56,13 @@ type MapperConfiguration struct {
 
 type RepositoryConfiguration struct {
 	PKG                  string
-	RepositoryNamePrefix string
-	RepositoryNameSuffix string
+	NamePrefix           string
+	NameSuffix           string
 	Comment              bool
 	RepositoryAnnotation bool
 }
 
 type XMLConfiguration struct {
-	Dir            string
-	Comment        bool
-	MapperPrefixes []string
-	MapperSuffixes []string
+	Dir     string
+	Comment bool
 }

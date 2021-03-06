@@ -47,20 +47,20 @@ func main() {
 		return
 	}
 
-	entityGenerators := GetEntityGenerators(tableMap)
+	entityGenerators := getEntityGenerators(tableMap)
 	generators = append(generators, entityGenerators...)
 
 	if *mapper {
-		mapperGenerators := GetMapperGenerators(entityGenerators)
+		mapperGenerators := getMapperGenerators(entityGenerators)
 		generators = append(generators, mapperGenerators...)
 		if *xml {
-			xmlGenerators := GetXMLGenerators(mapperGenerators)
+			xmlGenerators := getXMLGenerators(mapperGenerators)
 			generators = append(generators, xmlGenerators...)
 		}
 	}
 
 	if *repository {
-		repositoryGenerators := GetRepositoryGenerators(entityGenerators)
+		repositoryGenerators := getRepositoryGenerators(entityGenerators)
 		generators = append(generators, repositoryGenerators...)
 	}
 
