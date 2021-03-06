@@ -1,5 +1,5 @@
 # mybatis-code-generator
-A mybatis mapper &amp; entity generator
+A mybatis(mapper/entity) & JPA(Repository) generator
 
 ```
 Usage of mybatis-code-generator:
