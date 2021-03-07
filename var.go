@@ -39,7 +39,7 @@ var (
 	entityIdAnnotation             = flag.Bool("eia", true, "The entity @Id generated?")
 	entityColumnAnnotation         = flag.Bool("eca", true, "The entity @Column generated?")
 
-	mapper                 = flag.Bool("m", true, "The Mapper enable?")
+	mapper                 = flag.Bool("m", false, "The Mapper enable?")
 	mapperPKG              = flag.String("mp", "mapper", "The Mapper PKG")
 	mapperNamePrefix       = flag.String("mnp", "", "The Mapper name prefix")
 	mapperNameSuffix       = flag.String("mns", "Mapper", "The Mapper name suffix")
@@ -54,7 +54,7 @@ var (
 	repositoryComment              = flag.Bool("rc", true, "The Repository comment?")
 	repositoryRepositoryAnnotation = flag.Bool("rra", true, "The Repository @Repository generated?")
 
-	xml        = flag.Bool("x", true, "The mapper xml enable?")
+	xml        = flag.Bool("x", false, "The mapper xml enable?")
 	xmlDir     = flag.String("xd", "xml", "The XML Dir generated")
 	xmlComment = flag.Bool("xc", true, "The XML comment?")
 )

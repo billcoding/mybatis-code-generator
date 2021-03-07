@@ -1,5 +1,5 @@
 # mybatis-code-generator
-A mybatis(mapper/entity) & JPA(Repository) generator
+A Mybatis & JPA code generator
 
 ```
 Usage of mybatis-code-generator:
@@ -61,7 +61,7 @@ Supports options:
   -git string
         The include table names[table_a,table_b]
   -h    The help info
-  -m    The Mapper enable? (default true)
+  -m    The Mapper enable?
   -mc
         The Mapper comment? (default true)
   -mma
@@ -90,7 +90,7 @@ Supports options:
   -v    The version info
   -vb
         The verbose detail show?
-  -x    The mapper xml enable? (default true)
+  -x    The mapper xml enable?
   -xc
         The XML comment? (default true)
   -xd string
