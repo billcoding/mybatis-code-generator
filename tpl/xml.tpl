@@ -8,9 +8,8 @@
  {{if .Config.Global.Website}}@repo {{.Config.Global.WebsiteContent}}{{end}}
 -->
 <mapper namespace="{{.XML.Mapper.PKGName}}">
-    <resultMap id="BaseResultMap" type="{{.XML.Mapper.Entity.PKGName}}">
-        {{if .XML.ResultMap.HaveId}}<id column="{{.XML.ResultMap.Id.Column.Name}}" jdbcType="{{.XML.ResultMap.Id.Column.UpperType}}" property="{{.XML.ResultMap.Id.Name}}"/>{{end}}
-        {{range $i, $e := .XML.ResultMap.Items}}<result column="{{$e.Column.Name}}" jdbcType="{{$e.Column.UpperType}}" property="{{$e.Name}}"/>
-        {{end}}
+    <resultMap id="BaseResultMap" type="{{.XML.Mapper.Entity.PKGName}}">{{range $i, $e := .XML.Mapper.Entity.Fields}}
+        <id column="{{$e.Column.Name}}" jdbcType="{{$e.Column.UpperType}}" property="{{$e.Name}}"/>{{end}}{{range $i, $e := .XML.Mapper.Entity.Fields}}
+        <result column="{{$e.Column.Name}}" jdbcType="{{$e.Column.UpperType}}" property="{{$e.Name}}"/>{{end}}
     </resultMap>
 </mapper>

@@ -5,5 +5,6 @@ type Field struct {
 	Type             string
 	Comment          bool
 	ColumnAnnotation bool
+	IdAnnotation     bool
 	Column           *Column
 }

@@ -23,14 +23,6 @@ type XMLGenerator struct {
 func (xg *XMLGenerator) Init(m *Mapper) {
 	xg.XML = &XML{
 		Mapper: m,
-		ResultMap: &ResultMap{
-			Items: make([]*Field, 0),
-		},
-	}
-	xg.XML.ResultMap.HaveId = xg.XML.Mapper.Entity.HaveId
-	xg.XML.ResultMap.Id = xg.XML.Mapper.Entity.Id
-	for _, field := range xg.XML.Mapper.Entity.Fields {
-		xg.XML.ResultMap.Items = append(xg.XML.ResultMap.Items, field)
 	}
 }
 

@@ -8,5 +8,5 @@ type Entity struct {
 	Table   *Table
 	Fields  []*Field
 	HaveId  bool
-	Id      *Field
+	Ids     []*Field
 }

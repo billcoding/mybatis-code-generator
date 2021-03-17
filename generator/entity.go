@@ -34,11 +34,11 @@ func (eg *EntityGenerator) Init() *EntityGenerator {
 		Table:   eg.Table,
 		Fields:  make([]*Field, 0),
 		Comment: eg.C.Entity.Comment,
+		Ids:     make([]*Field, 0),
 	}
 	eg.Entity.Name = ConvertString(eg.Table.Name, eg.C.Entity.TableToEntityStrategy)
 	eg.Entity.PKGName = eg.Entity.PKG + "." + eg.Entity.Name
 	importMap := make(map[string]struct{}, 0)
-	priCount := 0
 	for _, column := range eg.Table.Columns {
 		field := &Field{
 			Name:             ConvertString(column.Name, eg.C.Entity.ColumnToFieldStrategy),
@@ -46,11 +46,11 @@ func (eg *EntityGenerator) Init() *EntityGenerator {
 			Column:           column,
 			Comment:          eg.C.Entity.FieldComment,
 			ColumnAnnotation: eg.C.Entity.ColumnAnnotation,
+			IdAnnotation:     eg.C.Entity.IdAnnotation,
 		}
 		if column.ColumnKey == "PRI" {
 			eg.Entity.HaveId = true
-			eg.Entity.Id = field
-			priCount++
+			eg.Entity.Ids = append(eg.Entity.Ids, field)
 		} else {
 			eg.Entity.Fields = append(eg.Entity.Fields, field)
 		}
@@ -90,9 +90,6 @@ func (eg *EntityGenerator) Init() *EntityGenerator {
 	}
 	if !eg.Entity.HaveId {
 		panic(fmt.Sprintf("Table of [%s] required at least one PRI column", eg.Entity.Table.Name))
-	}
-	if priCount > 1 {
-		panic(fmt.Sprintf("Table of [%s] have union PRI columns, but supports only one", eg.Entity.Table.Name))
 	}
 	return eg
 }
