@@ -11,6 +11,7 @@ var MysqlToJavaTypes = map[string]string{
 	"smallint":   "Short",
 	"mediumint":  "Integer",
 	"int":        "Integer",
+	"integer":    "Integer",
 	"bigint":     "Long",
 	"float":      "Float",
 	"double":     "Double",

@@ -32,6 +32,17 @@ func columns(database string) []*Column {
 	cs := make([]*Column, len(columnList))
 	for i, c := range columnList {
 		cs[i] = c.(*Column)
+		switch cs[i].Type {
+		case "int":
+			cs[i].Type = "integer"
+			cs[i].UpperType = "INTEGER"
+		case "datetime":
+			cs[i].Type = "date"
+			cs[i].UpperType = "DATE"
+		case "text":
+			cs[i].Type = "varchar"
+			cs[i].UpperType = "VARCHAR"
+		}
 	}
 	return cs
 }

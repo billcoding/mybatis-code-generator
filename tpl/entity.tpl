@@ -18,7 +18,7 @@ package {{.Config.Entity.PKG}};
 public class {{.Entity.Name}}{{if .Config.Entity.Extend}} extends {{.Config.Entity.Extends}}{{end}}{{if .Config.Entity.Implement}} implements {{range $i, $e := .Config.Entity.Implements}}{{if gt $i 0}}, {{end}}{{$e}}{{end}}{{end}}{
     {{range $i, $e := .Config.Entity.EntityClassPrefixes}}{{$e}}
     {{end}}
-    {{range $i, $e := .Entity.Fields}}
+    {{range $i, $e := .Entity.Ids}}
     {{if $e.Comment}}/**
      * {{$e.Column.Comment}}
      */{{end}}
