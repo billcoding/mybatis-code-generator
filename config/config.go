@@ -52,6 +52,7 @@ type MapperConfiguration struct {
 	Comment          bool
 	MapperAnnotation bool
 	MybatisPlus      bool
+	TK               bool
 }
 
 type RepositoryConfiguration struct {

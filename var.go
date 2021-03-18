@@ -44,6 +44,7 @@ var (
 	mapperNamePrefix       = flag.String("mnp", "", "The Mapper name prefix")
 	mapperNameSuffix       = flag.String("mns", "Mapper", "The Mapper name suffix")
 	mapperMybatis          = flag.Bool("mmb", false, "The Mapper supports Mybatis?")
+	mapperTK               = flag.Bool("mtk", false, "The Mapper supports TK?")
 	mapperComment          = flag.Bool("mc", true, "The Mapper comment?")
 	mapperMapperAnnotation = flag.Bool("mma", true, "The Mapper @Mapper generated?")
 
@@ -192,6 +193,12 @@ func setCFG() {
 		CFG.Mapper.NamePrefix = *mapperNamePrefix
 		CFG.Mapper.NameSuffix = *mapperNameSuffix
 		CFG.Mapper.MybatisPlus = *mapperMybatis
+		CFG.Mapper.TK = *mapperTK
+		if *mapperTK {
+			CFG.Mapper.MybatisPlus = false
+		} else if *mapperMybatis {
+			CFG.Mapper.TK = false
+		}
 		CFG.Mapper.Comment = *mapperComment
 		CFG.Mapper.MapperAnnotation = *mapperMapperAnnotation
 	}
