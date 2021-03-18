@@ -38,7 +38,7 @@ func columns(database string) []*Column {
 			cs[i].UpperType = "INTEGER"
 		case "datetime":
 			cs[i].UpperType = "DATE"
-		case "text":
+		case "text", "longtext":
 			cs[i].Type = "varchar"
 			cs[i].UpperType = "VARCHAR"
 		}
