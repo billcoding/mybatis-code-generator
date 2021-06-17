@@ -1,11 +1,12 @@
-package main
+package bundle
 
 import (
+	. "github.com/billcoding/mybatis-code-generator/config"
 	. "github.com/billcoding/mybatis-code-generator/generator"
 	. "github.com/billcoding/mybatis-code-generator/model"
 )
 
-func getEntityGenerators(tableMap map[string]*Table) []Generator {
+func GetEntityGenerators(CFG *Configuration, tableMap map[string]*Table) []Generator {
 	egs := make([]Generator, 0)
 	for _, v := range tableMap {
 		eg := &EntityGenerator{
@@ -18,7 +19,7 @@ func getEntityGenerators(tableMap map[string]*Table) []Generator {
 	return egs
 }
 
-func getMapperGenerators(entityGenerators []Generator) []Generator {
+func GetMapperGenerators(CFG *Configuration, entityGenerators []Generator) []Generator {
 	egs := make([]Generator, 0)
 	for _, eg := range entityGenerators {
 		mg := &MapperGenerator{
@@ -30,7 +31,7 @@ func getMapperGenerators(entityGenerators []Generator) []Generator {
 	return egs
 }
 
-func getRepositoryGenerators(entityGenerators []Generator) []Generator {
+func GetRepositoryGenerators(CFG *Configuration, entityGenerators []Generator) []Generator {
 	rgs := make([]Generator, 0)
 	for _, eg := range entityGenerators {
 		rg := &RepositoryGenerator{
@@ -42,7 +43,7 @@ func getRepositoryGenerators(entityGenerators []Generator) []Generator {
 	return rgs
 }
 
-func getXMLGenerators(mapperGenerators []Generator) []Generator {
+func GetXMLGenerators(CFG *Configuration, mapperGenerators []Generator) []Generator {
 	xgs := make([]Generator, 0)
 	for _, mg := range mapperGenerators {
 		xg := &XMLGenerator{

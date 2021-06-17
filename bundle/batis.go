@@ -1,4 +1,4 @@
-package main
+package bundle
 
 import (
 	. "github.com/billcoding/gobatis"
@@ -10,11 +10,9 @@ var (
 	SelectTableColumnListSelectMapper *SelectMapper
 )
 
-func initBatis() {
-	Default().DSN(*dsn)
-
+func Init(dsn string) {
+	Default().DSN(dsn)
 	Default().AddRaw(tableXML)
-
 	SelectTableListSelectMapper = NewHelper("table", "SelectTableList").Select()
 	SelectTableColumnListSelectMapper = NewHelper("table", "SelectTableColumnList").Select()
 }
