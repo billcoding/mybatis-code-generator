@@ -16,24 +16,24 @@ var genCmd = &cobra.Command{
 	Short:   "Generate Java files",
 	Long: `Generate Java files.
 Simply type mybatis-code-generator help gen for full details.`,
-	Example: `mybatis-code-generator -D "root:123@tcp(127.0.0.1:3306)/test" -d "database"
-mybatis-code-generator -D "root:123@tcp(127.0.0.1:3306)/test" -d "database" -o "/to/path" 
-mybatis-code-generator -D "root:123@tcp(127.0.0.1:3306)/test" -d "database" -au "bigboss" -o "/to/path"`,
+	Example: `mybatis-code-generator gen -D "root:123@tcp(127.0.0.1:3306)/test" -d "database"
+mybatis-code-generator gen -D "root:123@tcp(127.0.0.1:3306)/test" -d "database" -o "/to/path" 
+mybatis-code-generator gen -D "root:123@tcp(127.0.0.1:3306)/test" -d "database" -au "bigboss" -o "/to/path"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		CFG.Verbose = verbose
 
 		if dsn == "" {
-			fmt.Fprintln(os.Stderr, "The DSN is required")
+			_, _ = fmt.Fprintln(os.Stderr, "The DSN is required")
 			return
 		}
 
 		if database == "" {
-			fmt.Fprintln(os.Stderr, "The Database name is required")
+			_, _ = fmt.Fprintln(os.Stderr, "The Database name is required")
 			return
 		}
 
 		if !entity {
-			fmt.Fprintln(os.Stderr, "Nothing do...")
+			_, _ = fmt.Fprintln(os.Stderr, "Nothing do...")
 			return
 		}
 
