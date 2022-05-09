@@ -13,27 +13,27 @@ import (
 var genCmd = &cobra.Command{
 	Use:     "gen",
 	Aliases: []string{"g", "generate"},
-	Short:   "Generate Java files",
-	Long: `Generate Java files.
+	Short:   "Generate MyBatis Java files",
+	Long: `Generate MyBatis Java files.
 Simply type mybatis-code-generator help gen for full details.`,
-	Example: `mybatis-code-generator -D "root:123@tcp(127.0.0.1:3306)/test" -d "database"
-mybatis-code-generator -D "root:123@tcp(127.0.0.1:3306)/test" -d "database" -o "/to/path" 
-mybatis-code-generator -D "root:123@tcp(127.0.0.1:3306)/test" -d "database" -au "bigboss" -o "/to/path"`,
+	Example: `mybatis-code-generator gen -d "root:123@tcp(127.0.0.1:3306)/test" -D "database"
+mybatis-code-generator gen -d "root:123@tcp(127.0.0.1:3306)/test" -D "database" -o "/to/path" 
+mybatis-code-generator gen -d "root:123@tcp(127.0.0.1:3306)/test" -D "database" -au "bigboss" -o "/to/path"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		CFG.Verbose = verbose
 
 		if dsn == "" {
-			fmt.Fprintln(os.Stderr, "The DSN is required")
+			_, _ = fmt.Fprintln(os.Stderr, "The DSN is required")
 			return
 		}
 
 		if database == "" {
-			fmt.Fprintln(os.Stderr, "The Database name is required")
+			_, _ = fmt.Fprintln(os.Stderr, "The Database name is required")
 			return
 		}
 
 		if !entity {
-			fmt.Fprintln(os.Stderr, "Nothing do...")
+			_, _ = fmt.Fprintln(os.Stderr, "Nothing do...")
 			return
 		}
 
@@ -73,15 +73,14 @@ mybatis-code-generator -D "root:123@tcp(127.0.0.1:3306)/test" -d "database" -au 
 
 func init() {
 	genCmd.PersistentFlags().StringVarP(&outputDir, "output-dir", "o", "", "The output dir")
-	genCmd.PersistentFlags().StringVarP(&dsn, "dsn", "D", "", "The MySQL DSN")
-	genCmd.PersistentFlags().StringVarP(&database, "db", "d", "", "The Database name")
+	genCmd.PersistentFlags().StringVarP(&dsn, "dsn", "d", "", "The MySQL DSN")
+	genCmd.PersistentFlags().StringVarP(&database, "db", "D", "", "The Database name")
 	genCmd.PersistentFlags().StringVarP(&includeTable, "include-table", "I", "", "The include table names[table_a,table_b]")
-	genCmd.PersistentFlags().StringVarP(&excludeTable, "exclude-table", "E", "", "The exclude table names[table_a,table_b]")
 	genCmd.PersistentFlags().StringVar(&author, "author", "bill", "The file copyright author")
 	genCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "V", false, "Print verbose output")
 
 	genCmd.PersistentFlags().BoolVarP(&entity, "entity", "e", true, "Generate Entity Java file")
-	genCmd.PersistentFlags().StringVarP(&entityPKG, "entity-pkg", "1", "entity", "The Entity package")
+	genCmd.PersistentFlags().StringVarP(&entityPKG, "entity-pkg", "E", "entity", "The Entity package")
 	genCmd.PersistentFlags().BoolVar(&entityTable2EntityDefault, "table2entity-default", false, "The Table to Entity name strategy: default")
 	genCmd.PersistentFlags().BoolVar(&entityTable2EntityFirstLetterUpper, "table2entity-first-letter-upper", false, "The Table to Entity name strategy: FirstLetterUpper")
 	genCmd.PersistentFlags().BoolVar(&entityTable2EntityUnderlineToCamel, "table2entity-underline-to-camel", false, "The Table to Entity name strategy: UnderlineToCamel")
@@ -111,7 +110,7 @@ func init() {
 	genCmd.PersistentFlags().BoolVar(&entityColumnAnnotation, "entity-column-annotation", true, "Generate @Column for Entity field")
 
 	genCmd.PersistentFlags().BoolVarP(&mapper, "mapper", "m", true, "Generate Mapper interface")
-	genCmd.PersistentFlags().StringVarP(&mapperPKG, "mapper-pkg", "2", "mapper", "The Mapper interface package")
+	genCmd.PersistentFlags().StringVarP(&mapperPKG, "mapper-pkg", "M", "mapper", "The Mapper interface package")
 	genCmd.PersistentFlags().StringVar(&mapperNamePrefix, "mapper-name-prefix", "", "The Mapper name prefix")
 	genCmd.PersistentFlags().StringVar(&mapperNameSuffix, "mapper-name-suffix", "Mapper", "The Mapper name suffix")
 	genCmd.PersistentFlags().BoolVar(&mapperMybatis, "mapper-mybatis", true, "Generate Mapper Mybatis support")
@@ -120,14 +119,14 @@ func init() {
 	genCmd.PersistentFlags().BoolVar(&mapperAnnotation, "mapper-annotation", true, "Generate @Mapper for Mapper")
 
 	genCmd.PersistentFlags().BoolVarP(&repository, "repository", "r", false, "Generate Repository interface")
-	genCmd.PersistentFlags().StringVarP(&repositoryPKG, "repository-pkg", "3", "repository", "The Repository interface package")
+	genCmd.PersistentFlags().StringVarP(&repositoryPKG, "repository-pkg", "R", "repository", "The Repository interface package")
 	genCmd.PersistentFlags().StringVar(&repositoryNamePrefix, "repository-name-prefix", "", "The Repository name prefix")
 	genCmd.PersistentFlags().StringVar(&repositoryNameSuffix, "repository-name-suffix", "Repository", "The Repository name suffix")
 	genCmd.PersistentFlags().BoolVar(&repositoryComment, "repository-comment", true, "Generate Repository comment")
 	genCmd.PersistentFlags().BoolVar(&repositoryAnnotation, "repository-annotation", true, "Generate @Repository for Repository")
 
 	genCmd.PersistentFlags().BoolVarP(&xml, "xml", "x", true, "Generate Mapper XML files")
-	genCmd.PersistentFlags().StringVarP(&xmlDir, "xml-dir", "4", "xml", "The Mapper XML Dir")
+	genCmd.PersistentFlags().StringVarP(&xmlDir, "xml-dir", "X", "xml", "The Mapper XML Dir")
 	genCmd.PersistentFlags().BoolVar(&xmlComment, "xml-comment", true, "Generate Mapper XML comment")
 
 	rootCmd.AddCommand(genCmd)
@@ -138,7 +137,6 @@ var (
 	dsn          = ""
 	database     = ""
 	includeTable = ""
-	excludeTable = ""
 	author       = ""
 	verbose      = false
 
@@ -196,7 +194,6 @@ var CFG = &Configuration{
 	OutputDir:     "",
 	Verbose:       false,
 	IncludeTables: make([]string, 0),
-	ExcludeTables: make([]string, 0),
 	Global: &GlobalConfiguration{
 		Author:           "bill",
 		Date:             true,
@@ -262,8 +259,6 @@ func setCFG() {
 	}
 	if includeTable != "" {
 		CFG.IncludeTables = strings.Split(includeTable, ",")
-	} else if excludeTable != "" {
-		CFG.ExcludeTables = strings.Split(excludeTable, ",")
 	}
 
 	if author != "" {

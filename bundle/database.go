@@ -11,8 +11,6 @@ func Tables(database string, c *Configuration) []*Table {
 	whereSql := ""
 	if c.IncludeTables != nil && len(c.IncludeTables) > 0 {
 		whereSql = fmt.Sprintf("AND t.`TABLE_NAME` IN('%s')", strings.Join(c.IncludeTables, "','"))
-	} else if c.ExcludeTables != nil && len(c.ExcludeTables) > 0 {
-		whereSql = fmt.Sprintf("AND t.`TABLE_NAME` NOT IN('%s')", strings.Join(c.ExcludeTables, "','"))
 	}
 	tableList := SelectTableListSelectMapper.Prepare(map[string]interface{}{
 		"DBName": database,
